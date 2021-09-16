@@ -68,6 +68,19 @@ app.get('/api/moniciones', (req, res) => {
         }
     });
   });
+
+//Mostrar una sola monicion por su dia, semana y ciclo a traves de (query /)
+app.get("/api/moniciones", (req, res) => {
+    conexion.query("SELECT * FROM moniciones WHERE dia = ? AND semana = ? AND ciclo = ?", [req.query.dia, req.query.semana, req.query.ciclo],(error, fila)=>{
+        if(error){
+            throw error;
+        }else{
+            res.send(fila);
+            //res.send(fila[0].titulo);
+        }
+    });
+  });
+
 //Mostrar moniciones por su Ciclo a traves de (params /:)
 app.get('/api/moniciones/ciclo/:ciclo', (req, res) => {
     
@@ -109,13 +122,13 @@ app.get('/api/moniciones/tiempo/:tiempo/ciclo/:ciclo', (req, res) => {
 
 //Crear una sola moniciones
 app.post('/api/moniciones', (req, res)=>{
-  let data = {titulo:req.body.titulo, ciclo:req.body.ciclo, tiempo:req.body.tiempo, entrada:req.body.entrada, lecturas:req.body.lecturas, respuestaOracionUniversal:req.body.respuestaOracionUniversal, oracionUniversal1:req.body.oracionUniversal1, oracionUniversal2:req.body.oracionUniversal2, oracionUniversal3:req.body.oracionUniversal3, oracionUniversal4:req.body.oracionUniversal4, oracionUniversal5:req.body.oracionUniversal5, presentacionDeLasOfrendas:req.body.presentacionDeLasOfrendas, comunion:req.body.comunion, despedida:req.body.despedida};
+  let data = {dia:req.body.dia, semana:req.body.semana, titulo:req.body.titulo, ciclo:req.body.ciclo, tiempo:req.body.tiempo, entrada:req.body.entrada, lecturas:req.body.lecturas, respuestaOracionUniversal:req.body.respuestaOracionUniversal, oracionUniversal1:req.body.oracionUniversal1, oracionUniversal2:req.body.oracionUniversal2, oracionUniversal3:req.body.oracionUniversal3, oracionUniversal4:req.body.oracionUniversal4, oracionUniversal5:req.body.oracionUniversal5, presentacionDeLasOfrendas:req.body.presentacionDeLasOfrendas, comunion:req.body.comunion, despedida:req.body.despedida};
   let sql = "INSERT INTO moniciones SET ?";
   conexion.query(sql, data, function(error, results){
           if(error){
               throw error;
           }else{
-              res.send(results);
+              res.send('Monición Creada');
       }
   });
 });
@@ -137,12 +150,14 @@ app.put("/api/moniciones/:id", (req, res) => {
   let presentacionDeLasOfrendas = req.body.presentacionDeLasOfrendas;
   let comunion = req.body.comunion;
   let despedida = req.body.despedida;
-  let sql = "UPDATE moniciones SET titulo=?, ciclo=?, tiempo=?, entrada=?, lecturas=?, respuestaOracionUniversal=?, oracionUniversal1=?, oracionUniversal2=?, oracionUniversal3=?, oracionUniversal4=?, oracionUniversal5=?, presentacionDeLasOfrendas=?, comunion=?, despedida=? WHERE id=? ";
-  conexion.query(sql, [titulo, ciclo, tiempo, entrada, lecturas, respuestaOracionUniversal, oracionUniversal1, oracionUniversal2, oracionUniversal3, oracionUniversal4, oracionUniversal5, presentacionDeLasOfrendas, comunion, despedida, id], function (error, results) {
+  let dia = req.body.dia;
+  let semana = req.body.semana;
+  let sql = "UPDATE moniciones SET titulo=?, ciclo=?, tiempo=?, entrada=?, lecturas=?, respuestaOracionUniversal=?, oracionUniversal1=?, oracionUniversal2=?, oracionUniversal3=?, oracionUniversal4=?, oracionUniversal5=?, presentacionDeLasOfrendas=?, comunion=?, despedida=?, dia=?, semana=? WHERE id=?";
+  conexion.query(sql, [titulo, ciclo, tiempo, entrada, lecturas, respuestaOracionUniversal, oracionUniversal1, oracionUniversal2, oracionUniversal3, oracionUniversal4, oracionUniversal5, presentacionDeLasOfrendas, comunion, despedida, dia, semana, id], function (error, results) {
       if(error){
           throw error;
       }else{
-          res.send(results);
+          res.send('Monición Modificada');
       }
   });
   
@@ -154,7 +169,7 @@ app.delete("/api/moniciones/:id", (req, res) => {
       if(error){
           throw error;
       }else{
-          res.send(filas);
+          res.send('Monicion Eliminada');
       }
   });
 });
