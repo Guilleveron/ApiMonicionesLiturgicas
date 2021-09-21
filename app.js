@@ -122,7 +122,7 @@ app.get('/api/moniciones/tiempo/:tiempo/ciclo/:ciclo', (req, res) => {
 
 //Crear una sola moniciones
 app.post('/api/moniciones', (req, res)=>{
-  let data = {dia:req.body.dia, semana:req.body.semana, titulo:req.body.titulo, ciclo:req.body.ciclo, tiempo:req.body.tiempo, entrada:req.body.entrada, lecturas:req.body.lecturas, respuestaOracionUniversal:req.body.respuestaOracionUniversal, oracionUniversal1:req.body.oracionUniversal1, oracionUniversal2:req.body.oracionUniversal2, oracionUniversal3:req.body.oracionUniversal3, oracionUniversal4:req.body.oracionUniversal4, oracionUniversal5:req.body.oracionUniversal5, presentacionDeLasOfrendas:req.body.presentacionDeLasOfrendas, comunion:req.body.comunion, despedida:req.body.despedida};
+  let data = {dia:req.body.dia, semana:req.body.semana, fecha:req.body.fecha,titulo:req.body.titulo, ciclo:req.body.ciclo, tiempo:req.body.tiempo, entrada:req.body.entrada, lecturas:req.body.lecturas, respuestaOracionUniversal:req.body.respuestaOracionUniversal, oracionUniversal1:req.body.oracionUniversal1, oracionUniversal2:req.body.oracionUniversal2, oracionUniversal3:req.body.oracionUniversal3, oracionUniversal4:req.body.oracionUniversal4, oracionUniversal5:req.body.oracionUniversal5, presentacionDeLasOfrendas:req.body.presentacionDeLasOfrendas, comunion:req.body.comunion, despedida:req.body.despedida};
   let sql = "INSERT INTO moniciones SET ?";
   conexion.query(sql, data, function(error, results){
           if(error){
@@ -136,6 +136,9 @@ app.post('/api/moniciones', (req, res)=>{
 //Editar un moniciones
 app.put("/api/moniciones/:id", (req, res) => {
   let id = req.params.id;
+  let dia = req.body.dia;
+  let semana = req.body.semana;
+  let fecha = req.body.fecha;
   let titulo = req.body.titulo;
   let ciclo = req.body.ciclo;
   let tiempo = req.body.tiempo;
@@ -150,10 +153,8 @@ app.put("/api/moniciones/:id", (req, res) => {
   let presentacionDeLasOfrendas = req.body.presentacionDeLasOfrendas;
   let comunion = req.body.comunion;
   let despedida = req.body.despedida;
-  let dia = req.body.dia;
-  let semana = req.body.semana;
-  let sql = "UPDATE moniciones SET titulo=?, ciclo=?, tiempo=?, entrada=?, lecturas=?, respuestaOracionUniversal=?, oracionUniversal1=?, oracionUniversal2=?, oracionUniversal3=?, oracionUniversal4=?, oracionUniversal5=?, presentacionDeLasOfrendas=?, comunion=?, despedida=?, dia=?, semana=? WHERE id=?";
-  conexion.query(sql, [titulo, ciclo, tiempo, entrada, lecturas, respuestaOracionUniversal, oracionUniversal1, oracionUniversal2, oracionUniversal3, oracionUniversal4, oracionUniversal5, presentacionDeLasOfrendas, comunion, despedida, dia, semana, id], function (error, results) {
+  let sql = "UPDATE moniciones SET  dia=?, semana=?, fecha=?, titulo=?, ciclo=?, tiempo=?, entrada=?, lecturas=?, respuestaOracionUniversal=?, oracionUniversal1=?, oracionUniversal2=?, oracionUniversal3=?, oracionUniversal4=?, oracionUniversal5=?, presentacionDeLasOfrendas=?, comunion=?, despedida=? WHERE id=?";
+  conexion.query(sql, [dia, semana, fecha, titulo, ciclo, tiempo, entrada, lecturas, respuestaOracionUniversal, oracionUniversal1, oracionUniversal2, oracionUniversal3, oracionUniversal4, oracionUniversal5, presentacionDeLasOfrendas, comunion, despedida, id], function (error, results) {
       if(error){
           throw error;
       }else{
