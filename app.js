@@ -44,6 +44,17 @@ app.get("/api/moniciones/:id", (req, res) => {
       }
   });
 });
+//Mostrar una sola monicion por su fecha a traves de (params /:)
+app.get("/api/moniciones/fecha/:fecha", (req, res) => {
+    conexion.query(`SELECT * FROM moniciones WHERE fecha = ?`, [req.params.fecha],(error, fila)=>{
+        if(error){
+            throw error;
+        }else{
+            res.send(fila);
+            //res.send(fila[0].titulo);
+        }
+    });
+});
 //Mostrar una sola monicion por su titulo, ciclo y tiempo a traves de (params /:)
 app.get("/api/moniciones/:titulo/:ciclo/:tiempo", (req, res) => {
     conexion.query("SELECT * FROM moniciones WHERE titulo = ? AND ciclo = ? AND tiempo = ?", [req.params.titulo, req.params.ciclo, req.params.tiempo],(error, fila)=>{
