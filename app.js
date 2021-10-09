@@ -5,14 +5,14 @@ var app = express();
 ;
 app.use(express.json());
 app.use(cors());
-var conexion = mysql.createcreatePool({
+var conexion = mysql.createConnection({
     host:'us-cdbr-east-04.cleardb.com',
     user:'b3dc391cc851fb',
     password:'08fcee7d',
     database:'heroku_dfe49c234591b59'
 });
 
-conexion.getConnection(function(err){
+conexion.connect(function(err){
   if(err){
       throw err;
   }else{
