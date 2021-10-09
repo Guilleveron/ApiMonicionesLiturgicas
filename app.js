@@ -5,13 +5,14 @@ var app = express();
 ;
 app.use(express.json());
 app.use(cors());
-var conexion = mysql.createConnection({
-    host:'34.95.203.7',
-    user:'root',
-    password:'Guilleveron98/',
-    database:'BD_Moniciones_Liturgicas'
+var conexion = mysql.createcreatePool({
+    host:'us-cdbr-east-04.cleardb.com',
+    user:'b3dc391cc851fb',
+    password:'08fcee7d',
+    database:'heroku_dfe49c234591b59'
 });
-conexion.connect(function(err){
+
+conexion.getConnection(function(err){
   if(err){
       throw err;
   }else{
