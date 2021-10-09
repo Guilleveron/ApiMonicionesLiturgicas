@@ -6,10 +6,10 @@ var app = express();
 app.use(express.json());
 app.use(cors());
 var conexion = mysql.createConnection({
-    host:'localhost',
+    host:'34.95.203.7',
     user:'root',
-    password:'',
-    database:'datosmoniciones'
+    password:'Guilleveron98/',
+    database:'BD_Moniciones_Liturgicas'
 });
 conexion.connect(function(err){
   if(err){
