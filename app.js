@@ -5,13 +5,14 @@ var app = express();
 ;
 app.use(express.json());
 app.use(cors());
-var conexion = mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'',
-    database:'datosmoniciones'
+var conexion = mysql.createPool({
+    host:'us-cdbr-east-04.cleardb.com',
+    user:'b3dc391cc851fb',
+    password:'08fcee7d',
+    database:'heroku_dfe49c234591b59'
 });
-conexion.connect(function(err){
+
+conexion.getConnection(function(err){
   if(err){
       throw err;
   }else{
@@ -66,33 +67,7 @@ app.get("/api/moniciones/:titulo/:ciclo/:tiempo", (req, res) => {
         }
     });
   });
-
-//Mostrar una sola monicion por su titulo y ciclo a traves de (query /)
-app.get('/api/moniciones', (req, res) => {
-    
-    conexion.query("SELECT * FROM moniciones WHERE titulo = ? AND ciclo = ? ", [req.query.titulo, req.query.ciclo],(error, fila)=>{
-        if(error){
-            throw error;
-        }else{
-            res.send(fila);
-            //res.send(fila[0].titulo);
-        }
-    });
-  });
-
-//Mostrar una sola monicion por su dia, semana y ciclo a traves de (query /)
-app.get("/api/moniciones", (req, res) => {
-    conexion.query("SELECT * FROM moniciones WHERE dia = ? AND semana = ? AND ciclo = ?", [req.query.dia, req.query.semana, req.query.ciclo],(error, fila)=>{
-        if(error){
-            throw error;
-        }else{
-            res.send(fila);
-            //res.send(fila[0].titulo);
-        }
-    });
-  });
-
-//Mostrar moniciones por su Ciclo a traves de (params /:)
+  //Mostrar moniciones por su Ciclo a traves de (params /:)
 app.get('/api/moniciones/ciclo/:ciclo', (req, res) => {
     
     conexion.query("SELECT * FROM moniciones WHERE ciclo=? OR ciclo='a, b y c'", [req.params.ciclo],(error, fila)=>{
@@ -133,13 +108,11 @@ app.get('/api/moniciones/tiempo/:tiempo/ciclo/:ciclo', (req, res) => {
 
 //Crear una sola moniciones
 app.post('/api/moniciones', (req, res)=>{
-  let data = {dia:req.body.dia, semana:req.body.semana, fecha:req.body.fecha,titulo:req.body.titulo, ciclo:req.body.ciclo, tiempo:req.body.tiempo, entrada:req.body.entrada, lecturas:req.body.lecturas, respuestaOracionUniversal:req.body.respuestaOracionUniversal, oracionUniversal1:req.body.oracionUniversal1, oracionUniversal2:req.body.oracionUniversal2, oracionUniversal3:req.body.oracionUniversal3, oracionUniversal4:req.body.oracionUniversal4, oracionUniversal5:req.body.oracionUniversal5, presentacionDeLasOfrendas:req.body.presentacionDeLasOfrendas, comunion:req.body.comunion, despedida:req.body.despedida};
-  let sql = "INSERT INTO moniciones SET ?";
-  conexion.query(sql, data, function(error, results){
-          if(error){
-              throw error;
-          }else{
-              res.send('Monición Creada');
+    conexion.query("INSERT INTO moniciones (dia, semana, fecha, titulo, ciclo, tiempo, entrada, lecturas, respuestaOracionUniversal, oracionUniversal1, oracionUniversal2, oracionUniversal3, oracionUniversal4, oracionUniversal5, presentacionDeLasOfrendas, comunion, despedida) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [req.body.dia, req.body.semana, req.body.fecha, req.body.titulo, req.body.ciclo, req.body.tiempo, req.body.entrada, req.body.lecturas, req.body.respuestaOracionUniversal, req.body.oracionUniversal1, req.body.oracionUniversal2, req.body.oracionUniversal3, req.body.oracionUniversal4, req.body.oracionUniversal5, req.body.presentacionDeLasOfrendas, req.body.comunion, req.body.despedida], function(error, results){
+        if(error){
+            throw error;
+        }else{
+            res.send('Monición Creada con Éxito');
       }
   });
 });
@@ -169,7 +142,7 @@ app.put("/api/moniciones/:id", (req, res) => {
       if(error){
           throw error;
       }else{
-          res.send('Monición Modificada');
+          res.send('Monición Modificada con Éxito');
       }
   });
   
@@ -181,7 +154,7 @@ app.delete("/api/moniciones/:id", (req, res) => {
       if(error){
           throw error;
       }else{
-          res.send('Monicion Eliminada');
+          res.send('Monicion Eliminada con Éxito');
       }
   });
 });
