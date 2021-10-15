@@ -6,11 +6,11 @@ var app = express();
 app.use(express.json());
 app.use(cors());
 var conexion = mysql.createPool({
-    host:'localhost',
-    user:'root',
-    password:'',
-    database:'datosmoniciones'
-});
+    host:'us-cdbr-east-04.cleardb.com',
+    user:'bd839da3b0d485',
+    password:'7ee796ce',
+    database:'heroku_ae4cdccedabc381'
+}); 
 
 conexion.getConnection(function(err){
   if(err){
