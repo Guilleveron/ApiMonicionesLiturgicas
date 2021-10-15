@@ -154,7 +154,7 @@ app.delete("/api/moniciones/:id", (req, res) => {
       if(error){
           throw error;
       }else{
-          res.send('Monicion Eliminada con Éxito');
+          res.send('Monicion Eliminada con Éxito.');
       }
   });
 });
